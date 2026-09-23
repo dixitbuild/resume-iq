@@ -85,6 +85,11 @@ raw resume/JD → ingestion/ → embeddings/ → retrieval/ (optional) → promp
   (generated vector DB persistence files — treat as disposable).
 - `tests/` — one file per module, named `test_<module>.py`; add one whenever
   a new module lands elsewhere.
+- `notes/` — learning notes from concept explanations, one file per
+  `LEARNING.md` phase (e.g. `notes/phase1-ingestion.md`), not one combined
+  file. When explaining a concept for the phase currently being worked,
+  append it to that phase's notes file (create it if it doesn't exist yet)
+  so the user can revisit and revise it later.
 
 ### Where new code goes
 
