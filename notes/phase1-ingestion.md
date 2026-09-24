@@ -141,3 +141,47 @@ another paragraph) takes a different traversal. Text boxes and
 floating shapes are stored under a different XML namespace
 (drawingML/VML) than regular runs, so the basic `.text` properties
 don't surface them at all — another silent gap, not an error.
+
+**Where they lose information — quick reference**
+
+*PDF (`pypdf`)*
+
+- **Multi-column layout:** no concept of columns exists in the file;
+  text is emitted in drawing order, so a naive extraction can interleave
+  the left and right column line-by-line instead of reading one column
+  fully before the other.
+- **Tables:** no table concept at all — cell text extracts as a loose
+  stream of words with row/column structure gone.
+- **Headers/footers:** extracted per-page as part of the same content
+  stream as the body, with no tag distinguishing them — they aren't
+  cleanly separable from body text.
+- **Font encoding / ligatures:** character codes in the content stream
+  only become real Unicode via the font's `ToUnicode` CMap; subsetted or
+  non-standard-encoded fonts can lack a usable map, producing mojibake
+  or empty output instead of a clean failure.
+- **Scanned pages:** if the "text" is actually a photographed or
+  scanned image embedded in the PDF, there is no text layer to extract
+  at all — this needs OCR, not text extraction.
+- **Line breaks / spacing:** inserted heuristically from cursor-position
+  jumps between glyphs, not stored as real paragraph/sentence
+  boundaries — can produce merged words or spurious mid-sentence breaks.
+
+*DOCX (`python-docx`)*
+
+- **Tables:** genuinely modeled (`.tables`, with rows/cells), but they
+  live outside `.paragraphs` — a naive walk that only reads
+  `.paragraphs` skips every table silently.
+- **Headers/footers:** stored in separate XML parts (`header1.xml`,
+  `footer1.xml`) linked via section properties — invisible unless you
+  explicitly fetch those parts; `.paragraphs` never includes them.
+- **Text boxes / floating shapes:** stored under a different XML
+  namespace (drawingML/VML) than normal paragraph runs, so
+  `.text`/`.paragraphs` doesn't see them at all.
+- **Reading order across content types:** `.paragraphs` and `.tables`
+  are separate collections — reconstructing the true top-to-bottom
+  order (paragraph, then table, then paragraph again) takes a different
+  traversal than just concatenating each collection.
+
+**Next step (open):** try pulling text out of a real PDF resume with
+`pypdf` and see which of these actually shows up, vs. loading the same
+resume as a `.docx` and inspecting `python-docx`'s paragraph/table API.
