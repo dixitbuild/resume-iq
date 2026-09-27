@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment / secrets
+.env
+
+# Data (per structure.md: raw uploads and generated artifacts, not source)
+data/raw/
+data/processed/
+data/vector_store/
+
+# Editor/OS
+.DS_Store

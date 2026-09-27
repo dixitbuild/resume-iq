@@ -89,7 +89,10 @@ raw resume/JD → ingestion/ → embeddings/ → retrieval/ (optional) → promp
   `LEARNING.md` phase (e.g. `notes/phase1-ingestion.md`), not one combined
   file. When explaining a concept for the phase currently being worked,
   append it to that phase's notes file (create it if it doesn't exist yet)
-  so the user can revisit and revise it later.
+  so the user can revisit and revise it later. `notes/known-issues.md` is
+  a separate, non-phase-specific running list of discovered limitations
+  (e.g. a filter that can't distinguish X from Y) — not tied to one
+  phase, since issues can resurface or matter again later.
 
 ### Where new code goes
 
