@@ -5,7 +5,7 @@ reader = PdfReader("/Users/dixitdhiman/Downloads/my resume/Dixit Resume.pdf")
 text =""
 
 for page in reader.pages:
-    text += page.extract_text()
-    
+    text += page.extract_text()  + "\n"
+
 print(repr(text))
 
