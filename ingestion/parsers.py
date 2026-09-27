@@ -13,6 +13,4 @@ def read_pdf(file_path=default_path):
 
     return text
 
-resume_text = read_pdf()
-print(resume_text)
 
