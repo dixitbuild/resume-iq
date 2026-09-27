@@ -28,12 +28,12 @@ differently once an LLM is in the loop (see Phase 7).
 
 ## Phase 1 — Ingestion: getting clean text out of a resume
 
-- [ ] **Learn**
+- [x] **Learn**
   - [x] Why PDF/DOCX aren't "text with a different extension" — PDF stores
     positioned glyphs, not reading order; DOCX stores structured XML
   - [x] What text-extraction libraries actually do under the hood (`pypdf`,
     `python-docx`) and where they lose information (columns, tables, headers)
-  - [ ] Why downstream AI steps are sensitive to garbage input (whitespace noise
+  - [x] Why downstream AI steps are sensitive to garbage input (whitespace noise
     burns tokens; broken sentence flow hurts embedding quality) — "garbage
     in, garbage embedding" is the AI-era version of "garbage in, garbage out"
 - [ ] **Build** — `ingestion/parsers.py` (extract raw text from
