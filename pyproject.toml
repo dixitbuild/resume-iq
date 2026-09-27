@@ -1,0 +1,19 @@
+[project]
+name = "resume-iq"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "dixit", email = "dixitbuild@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pypdf>=6.19.0",
+    "python-docx>=1.2.0",
+]
+
+[project.scripts]
+resume-iq = "resume_iq:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
