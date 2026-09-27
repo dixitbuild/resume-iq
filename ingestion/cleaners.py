@@ -11,7 +11,7 @@ def clean(text: str) -> str:
     """
     cleaned_text = ''
     for char in text:
-        if char =='\n' or char == '\n' or unicodedata.category(char)[0] in ['L', 'N', 'P', 'Z']:
+        if char =='+' or char == '\n' or unicodedata.category(char)[0] in ['L', 'N', 'P', 'Z']:
             cleaned_text += char
    
     return cleaned_text
