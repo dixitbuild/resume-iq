@@ -2,6 +2,10 @@
 
 from pypdf import PdfReader
 reader = PdfReader("/Users/dixitdhiman/Downloads/my resume/Dixit Resume.pdf")
-text = reader.pages[0].extract_text()
+text =""
+
+for page in reader.pages:
+    text += page.extract_text()
+    
 print(repr(text))
 
