@@ -185,3 +185,68 @@ don't surface them at all — another silent gap, not an error.
 **Next step (open):** try pulling text out of a real PDF resume with
 `pypdf` and see which of these actually shows up, vs. loading the same
 resume as a `.docx` and inspecting `python-docx`'s paragraph/table API.
+
+---
+
+### Why downstream AI steps are sensitive to garbage input
+
+**Explain-like-I'm-a-kid version**
+
+You write a letter to your best friend. But on the way, it rains on it —
+some words get smudged, and a page gets torn so two sentences get taped
+together in the wrong order.
+
+Your friend opens it and tries to read it anyway. Two bad things happen:
+
+1. Your friend wastes time squinting at smudges that don't even say
+   anything.
+2. Because the sentences got mixed up, your friend might think you
+   wrote something you didn't — like reading "I do not like broccoli"
+   as "I like broccoli" — and they won't even know they got it wrong.
+   They'll just believe it.
+
+A computer reading a resume is just like your friend reading that
+letter. It can only "read" so many words at once (like it only has so
+much attention), so:
+
+- Messy junk in the text wastes some of that attention on stuff that
+  means nothing.
+- If the words got jumbled (two parts of the resume stuck together
+  wrong), the computer might think the resume says something it
+  doesn't — and it won't raise its hand and say "hey, this looks
+  weird." It'll just quietly get it wrong.
+
+So before we let the computer read the resume, we clean it up first —
+like drying off the smudges and taping the torn page back the *right*
+way — so it reads the real thing, not a confused mash-up of it.
+
+**Simplified grown-up version**
+
+LLMs get charged and limited by "chunks of text" called tokens — every
+character you feed in costs something and counts against a max. So
+junk characters (stray symbols, extra blank lines) just waste money and
+space for no reason.
+
+But there's a worse problem than cost: if the text itself is scrambled
+— like two sentences glued together wrong, or a word split in half —
+the model doesn't error out. It just quietly misunderstands the content
+and gives you a confidently wrong answer, with no warning that
+anything was off.
+
+- **Cost/limit problem:** noise (extra whitespace, weird control
+  characters from PDF extraction) eats into a hard token limit and gets
+  billed per token — sometimes worse than normal text, because garbled
+  character sequences can tokenize *less* efficiently than clean words.
+- **Meaning problem (the real one):** embedding and LLM models learned
+  patterns from real, well-formed language. Feed them a mangled
+  sentence (columns interleaved, a word cut mid-way) and they don't
+  refuse — they just produce a vector or an answer that's subtly wrong,
+  because they're pattern-matching against something that isn't a real
+  sentence. This is silent: no crash, no error, just gradually worse
+  results. That's why it's not "garbage in, garbage out" (obvious, loud
+  failure) but "garbage in, garbage *embedding*" (quiet,
+  hard-to-detect failure).
+
+So `cleaners.py` isn't just tidying whitespace for cosmetics — it's
+protecting both your token budget and the model's ability to actually
+understand the text.
